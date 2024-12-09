@@ -54,4 +54,6 @@ const User = sequelize.define("User", {
   }
 });
 
+User.belongsTo(Category, { foreignKey: 'categoryId' });
+
 module.exports = User;
