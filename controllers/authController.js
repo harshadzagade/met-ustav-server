@@ -11,8 +11,8 @@ exports.registerUser = [
   check('email').isEmail().withMessage('Invalid email'),
   check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
   check('role').isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee']).withMessage('Invalid role'),
-  check('rollNo').isLength({ min: 5, max: 10 }).withMessage('Roll number must be between 5 and 10 characters'),
-  check('institute').isLength({ min: 3, max: 50 }).withMessage('Institute must be between 3 and 50 characters'),
+  check('rollNo').isLength({ min: 1, max: 3 }).withMessage('Roll number must be between 5 and 10 characters'),
+  check('instituteId').isInt().withMessage('Invalid institute ID'),
   check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
   check('categoryId').isInt().withMessage('Invalid category ID'),
 
@@ -31,7 +31,7 @@ exports.registerUser = [
       password, 
       role, 
       rollNo, 
-      institute, 
+      instituteId, 
       phoneNo, 
       categoryId 
     } = req.body;
@@ -53,7 +53,7 @@ exports.registerUser = [
         password: hashedPassword,
         role,
         rollNo,
-        institute,
+        instituteId,
         phoneNo,
         categoryId,
       });

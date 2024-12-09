@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 const Category = require("./Category");
+const Institute = require("./Institute");
 
 const User = sequelize.define("User", {
   firstName: {
@@ -36,13 +37,13 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  institute: {
-    type: DataTypes.STRING,
+  instituteId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
-  },
-  phoneNo: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    references: {
+      model: 'Institutes',
+      key: 'id'
+    }
   },
   categoryId: {
     type: DataTypes.INTEGER,
@@ -51,9 +52,18 @@ const User = sequelize.define("User", {
       model: 'Categories',
       key: 'id'
     }
+  },
+  phoneNo: {
+    type: DataTypes.STRING,
+    allowNull: false,
   }
-});
+},
+{
+  timestamps: true,
+}
+);
 
 User.belongsTo(Category, { foreignKey: 'categoryId' });
+User.belongsTo(Institute, { foreignKey: 'instituteId' });
 
 module.exports = User;
