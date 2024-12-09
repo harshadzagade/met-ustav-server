@@ -4,13 +4,17 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
 
 exports.registerUser = [
-  check('name').isLength({ min: 3, max: 50 }).withMessage('Name must be between 3 and 50 characters'),
+  check('firstName').isLength({ min: 3, max: 50 }).withMessage('First name must be between 3 and 50 characters'),
+  check('middleName').isLength({ min: 3, max: 50 }).withMessage('Middle name must be between 3 and 50 characters'),
+  check('lastName').isLength({ min: 3, max: 50 }).withMessage('Last name must be between 3 and 50 characters'),
   check('gender').isIn(['Male', 'Female', 'Other']).withMessage('Invalid gender'),
   check('email').isEmail().withMessage('Invalid email'),
   check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
-  check('role').isIn(['Participant', 'Admin']).withMessage('Invalid role'),
-  check('grNo').isLength({ min: 5, max: 10 }).withMessage('GR number must be between 5 and 10 characters'),
+  check('role').isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee']).withMessage('Invalid role'),
+  check('rollNo').isLength({ min: 5, max: 10 }).withMessage('Roll number must be between 5 and 10 characters'),
+  check('institute').isLength({ min: 3, max: 50 }).withMessage('Institute must be between 3 and 50 characters'),
   check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
+  check('categoryId').isInt().withMessage('Invalid category ID'),
 
   async (req, res) => {
     const errors = validationResult(req);
@@ -18,7 +22,19 @@ exports.registerUser = [
       return res.status(422).json({ errors: errors.array() });
     }
 
-    const { name, gender, email, password, role, grNo, phoneNo } = req.body;
+    const { 
+      firstName, 
+      middleName, 
+      lastName, 
+      gender, 
+      email, 
+      password, 
+      role, 
+      rollNo, 
+      institute, 
+      phoneNo, 
+      categoryId 
+    } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -29,13 +45,17 @@ exports.registerUser = [
       }
 
       const newUser = await User.create({
-        name,
+        firstName,
+        middleName,
+        lastName,
         gender,
         email,
         password: hashedPassword,
         role,
-        grNo,
+        rollNo,
+        institute,
         phoneNo,
+        categoryId,
       });
 
       res.json(newUser);

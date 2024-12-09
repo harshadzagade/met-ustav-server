@@ -1,8 +1,17 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
+const Category = require("./Category");
 
 const User = sequelize.define("User", {
-  name: {
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  middleName: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  lastName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -22,9 +31,12 @@ const User = sequelize.define("User", {
   role: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: "Participant",
   },
-  grNo: {
+  rollNo: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  institute: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -32,6 +44,14 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  categoryId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Categories',
+      key: 'id'
+    }
+  }
 });
 
 module.exports = User;

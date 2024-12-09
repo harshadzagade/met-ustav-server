@@ -12,7 +12,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/events', eventRoutes);
 
 
-const port = 3000;
+const port = 5500;
 
 sequelize.sync().then(() => {
   app.listen(port, () => {
