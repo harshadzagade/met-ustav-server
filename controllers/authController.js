@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
+const Institute = require('../models/Institute');
+const Category = require('../models/Category');
 
 exports.registerUser = [
   check('firstName').isLength({ min: 3, max: 50 }).withMessage('First name must be between 3 and 50 characters'),
@@ -11,7 +13,7 @@ exports.registerUser = [
   check('email').isEmail().withMessage('Invalid email'),
   check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
   check('role').isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee']).withMessage('Invalid role'),
-  check('rollNo').isLength({ min: 1, max: 3 }).withMessage('Roll number must be between 5 and 10 characters'),
+  check('rollNo').isLength({ min: 1, max: 10 }).withMessage('Roll number must be between 1 and 10 characters'),
   check('instituteId').isInt().withMessage('Invalid institute ID'),
   check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
   check('categoryId').isInt().withMessage('Invalid category ID'),
@@ -103,7 +105,9 @@ exports.loginUser = [
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [{ model: Category, as: 'Category' }, { model: Institute, as: 'Institute' }], 
+    });
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -114,7 +118,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.params.id);  
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
