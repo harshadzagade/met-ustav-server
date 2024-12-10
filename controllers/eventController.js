@@ -35,7 +35,7 @@ const eventController = {
     try {
       const id = req.params.id;
       const event = await Event.findByPk(id, {
-        include: [{ model: Category, as: 'category' }], // include associated category
+        include: [{ model: Category, as: 'Category' }], // include associated category
       });
       if (!event) {
         res.status(404).json({ message: 'Event not found' });
