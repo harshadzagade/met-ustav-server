@@ -12,7 +12,7 @@ exports.registerUser = [
   check('gender').isIn(['Male', 'Female', 'Other']).withMessage('Invalid gender'),
   check('email').isEmail().withMessage('Invalid email'),
   check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
-  check('role').isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee']).withMessage('Invalid role'),
+  check('role').isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee', 'User']).withMessage('Invalid role'),
   check('rollNo').isLength({ min: 1, max: 10 }).withMessage('Roll number must be between 1 and 10 characters'),
   check('instituteId').isInt().withMessage('Invalid institute ID'),
   check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
