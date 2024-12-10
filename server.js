@@ -7,10 +7,18 @@ const eventRoutes = require('./routes/eventRoutes');
 const instituteRoutes = require('./routes/instituteRoutes');
 const noticeRoutes = require('./routes/noticeRoutes');
 const roleRoutes = require('./routes/roleRoutes');
-const cors = require('cors');
 require('dotenv').config();
 
-app.use(cors()); 
+const cors = require("cors");
+
+const corsOptions = {
+  origin: "http://localhost:5173", // Allow requests from your frontend
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Allow cookies if needed
+};
+
+app.use(cors(corsOptions));
+
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
