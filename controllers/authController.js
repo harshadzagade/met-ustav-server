@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
 const Institute = require('../models/Institute');
 const Category = require('../models/Category');
+require('dotenv').config();
 
 exports.registerUser = [
   check('firstName').isLength({ min: 3, max: 50 }).withMessage('First name must be between 3 and 50 characters'),
