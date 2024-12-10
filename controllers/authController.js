@@ -71,7 +71,7 @@ exports.registerUser = [
 
 exports.loginUser = [
   check('email').isEmail().withMessage('Invalid email'),
-  check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
+  check('password').isLength({ min: 4, max: 4 }).withMessage('Password must be between 4 and 4 characters'),
 
   async (req, res) => {
     const errors = validationResult(req);
