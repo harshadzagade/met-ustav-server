@@ -56,6 +56,7 @@ exports.registerUser = [
         password: hashedPassword,
         role,
         rollNo,
+        type,
         instituteId,
         phoneNo,
         categoryId,
@@ -151,7 +152,7 @@ exports.updateUser = [
         return res.status(404).json({ msg: 'User not found' });
       }
 
-      const { name, gender, email, password, role, grNo, phoneNo } = req.body;
+      const { name, gender, email, password, role, type, grNo, phoneNo } = req.body;
 
       if (password) {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -162,6 +163,7 @@ exports.updateUser = [
       user.gender = gender;
       user.email = email;
       user.role = role;
+      user.type = type;
       user.grNo = grNo;
       user.phoneNo = phoneNo;
 

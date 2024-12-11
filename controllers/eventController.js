@@ -3,21 +3,71 @@ const Category = require('../models/Category');
 
 const eventController = {
   // Create
+  // createEvent: async (req, res) => {
+  //   try {
+  //     const event = await Event.create({
+  //       name: req.body.name,
+  //       date: req.body.date,
+  //       banner: req.body.banner,
+  //       poster: req.body.poster,
+  //       addBy: req.body.addBy,
+  //       categoryId: req.body.categoryId, // foreign key
+  //     });
+  //     res.status(201).json(event);
+  //   } catch (error) {
+  //     res.status(400).json({ message: error.message });
+  //   }
+  // },
+
   createEvent: async (req, res) => {
     try {
+      // Extract data from request
+      const { name, date, addBy, categoryId } = req.body;
+  
+      // Check if files are provided
+      const bannerFile = req.files?.banner; // 'banner' is the key from the client
+      const posterFile = req.files?.poster; // 'poster' is the key from the client
+  
+      // Set up upload directory
+      const uploadDir = path.join(__dirname, "../uploads/");
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+  
+      // Save banner
+      let bannerPath = null;
+      if (bannerFile) {
+        const bannerFilename = `${Date.now()}_${bannerFile.name}`;
+        bannerPath = `/uploads/${bannerFilename}`;
+        const bannerFullPath = path.join(uploadDir, bannerFilename);
+        await bannerFile.mv(bannerFullPath); // Move file to destination
+      }
+  
+      // Save poster
+      let posterPath = null;
+      if (posterFile) {
+        const posterFilename = `${Date.now()}_${posterFile.name}`;
+        posterPath = `/uploads/${posterFilename}`;
+        const posterFullPath = path.join(uploadDir, posterFilename);
+        await posterFile.mv(posterFullPath); // Move file to destination
+      }
+  
+      // Save event to database
       const event = await Event.create({
-        name: req.body.name,
-        date: req.body.date,
-        banner: req.body.banner,
-        poster: req.body.poster,
-        addBy: req.body.addBy,
-        categoryId: req.body.categoryId, // foreign key
+        name,
+        date,
+        banner: bannerPath,
+        poster: posterPath,
+        addBy,
+        categoryId,
       });
+  
       res.status(201).json(event);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
   },
+  
 
   // Read
   getAllEvents: async (req, res) => {
