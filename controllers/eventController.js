@@ -1,5 +1,8 @@
 const Event = require('../models/Event');
 const Category = require('../models/Category');
+const fileUpload = require("express-fileupload");
+const path = require("path");
+const fs = require("fs");
 
 const eventController = {
   // Create
