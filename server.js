@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const sequelize = require('./config/db');
+const fileUpload = require('express-fileupload');
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const eventRoutes = require('./routes/eventRoutes');
@@ -11,6 +12,8 @@ require('dotenv').config();
 
 const cors = require("cors");
 
+
+
 const corsOptions = {
   origin: "http://localhost:5173", // Allow requests from your frontend
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -19,6 +22,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(fileUpload());
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
