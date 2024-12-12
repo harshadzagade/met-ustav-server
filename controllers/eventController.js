@@ -39,7 +39,7 @@ const eventController = {
       // Save banner
       let bannerPath = null;
       if (bannerFile) {
-        const bannerFilename = `${Date.now()}_${bannerFile.name}`;
+        const bannerFilename = bannerFile.name;
         bannerPath = `/uploads/${bannerFilename}`;
         const bannerFullPath = path.join(uploadDir, bannerFilename);
         await bannerFile.mv(bannerFullPath); // Move file to destination
