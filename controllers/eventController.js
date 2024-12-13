@@ -48,7 +48,7 @@ const eventController = {
       // Save poster
       let posterPath = null;
       if (posterFile) {
-        const posterFilename = `${Date.now()}_${posterFile.name}`;
+        const posterFilename = posterFile.name;
         posterPath = `/uploads/${posterFilename}`;
         const posterFullPath = path.join(uploadDir, posterFilename);
         await posterFile.mv(posterFullPath); // Move file to destination
