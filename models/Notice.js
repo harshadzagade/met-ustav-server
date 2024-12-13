@@ -1,5 +1,6 @@
 const sequelize = require('../config/db');
 const { DataTypes } = require('sequelize');
+const Institute = require('./Institute');
 
 const Notice = sequelize.define('Notice', {
     title: {
@@ -32,5 +33,8 @@ const Notice = sequelize.define('Notice', {
     }
 }
 );
+
+Notice.belongsTo(Institute, { as: 'Institutes', foreignKey: 'instituteId' });
+Institute.hasMany(Notice, { as: 'Notices', foreignKey: 'instituteId' });
 
 module.exports = Notice;

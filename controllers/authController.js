@@ -14,6 +14,7 @@ exports.registerUser = [
   check('email').isEmail().withMessage('Invalid email'),
   check('password').isLength({ min: 4, max: 4 }).withMessage('Password must be between 8 and 128 characters'),
   check('role').isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee', 'User']).withMessage('Invalid role'),
+  check('type').isIn(['Student', 'Staff']).withMessage('Invalid type. Please select Student or Staff'),
   check('rollNo').isLength({ min: 1, max: 10 }).withMessage('Roll number must be between 1 and 10 characters'),
   check('instituteId').isInt().withMessage('Invalid institute ID'),
   check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
@@ -33,6 +34,7 @@ exports.registerUser = [
       email, 
       password, 
       role, 
+      type,
       rollNo, 
       instituteId, 
       phoneNo, 
@@ -55,8 +57,8 @@ exports.registerUser = [
         email,
         password: hashedPassword,
         role,
-        rollNo,
         type,
+        rollNo,
         instituteId,
         phoneNo,
         categoryId,
@@ -137,8 +139,12 @@ exports.updateUser = [
   check('email').isEmail().withMessage('Invalid email'),
   check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
   check('role').isIn(['Participant', 'Admin']).withMessage('Invalid role'),
+  check('type').isIn(['Student', 'Staff']).withMessage('Invalid type'),
   check('grNo').isLength({ min: 5, max: 10 }).withMessage('GR number must be between 5 and 10 characters'),
   check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
+
+  check('categoryId').isInt().withMessage('Invalid category ID'),
+  check('instituteId').isInt().withMessage('Invalid institute ID'),
 
   async (req, res) => {
     const errors = validationResult(req);
@@ -152,7 +158,7 @@ exports.updateUser = [
         return res.status(404).json({ msg: 'User not found' });
       }
 
-      const { name, gender, email, password, role, type, grNo, phoneNo } = req.body;
+      const { name, gender, email, password, role, type, grNo, phoneNo, categoryId, instituteId } = req.body;
 
       if (password) {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -166,6 +172,8 @@ exports.updateUser = [
       user.type = type;
       user.grNo = grNo;
       user.phoneNo = phoneNo;
+      user.categoryId = categoryId;
+      user.instituteId = instituteId;
 
       await user.save();
       res.json(user);

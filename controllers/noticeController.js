@@ -1,4 +1,5 @@
 const Notice = require('../models/Notice');
+const Institute = require('../models/Institute');
 
 
 exports.addNotice = async (req, res) => {
@@ -12,7 +13,9 @@ exports.addNotice = async (req, res) => {
 
 exports.getAllNotices = async (req, res) => {
     try {
-        const notices = await Notice.findAll();
+        const notices = await Notice.findAll({
+            include: [{ model: Institute, as: 'Institutes' }],
+        });
         res.json(notices);
     } catch (error) {
         res.status(500).json({ message: error.message });
