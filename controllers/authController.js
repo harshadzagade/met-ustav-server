@@ -134,17 +134,16 @@ exports.getUser = async (req, res) => {
 };
 
 exports.updateUser = [
-  check('name').isLength({ min: 3, max: 50 }).withMessage('Name must be between 3 and 50 characters'),
-  check('gender').isIn(['Male', 'Female', 'Other']).withMessage('Invalid gender'),
-  check('email').isEmail().withMessage('Invalid email'),
-  check('password').isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
-  check('role').isIn(['Participant', 'Admin']).withMessage('Invalid role'),
-  check('type').isIn(['Student', 'Staff']).withMessage('Invalid type'),
-  check('grNo').isLength({ min: 5, max: 10 }).withMessage('GR number must be between 5 and 10 characters'),
-  check('phoneNo').isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
-
-  check('categoryId').isInt().withMessage('Invalid category ID'),
-  check('instituteId').isInt().withMessage('Invalid institute ID'),
+  check('name').optional().isLength({ min: 3, max: 50 }).withMessage('Name must be between 3 and 50 characters'),
+  check('gender').optional().isIn(['Male', 'Female', 'Other']).withMessage('Invalid gender'),
+  check('email').optional().isEmail().withMessage('Invalid email'),
+  check('password').optional().isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
+  check('role').optional().isIn(['Participant', 'Admin']).withMessage('Invalid role'),
+  check('type').optional().isIn(['Student', 'Staff']).withMessage('Invalid type'),
+  check('grNo').optional().isLength({ min: 5, max: 10 }).withMessage('GR number must be between 5 and 10 characters'),
+  check('phoneNo').optional().isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
+  check('categoryId').optional().isInt().withMessage('Invalid category ID'),
+  check('instituteId').optional().isInt().withMessage('Invalid institute ID'),
 
   async (req, res) => {
     const errors = validationResult(req);
@@ -158,22 +157,19 @@ exports.updateUser = [
         return res.status(404).json({ msg: 'User not found' });
       }
 
-      const { name, gender, email, password, role, type, grNo, phoneNo, categoryId, instituteId } = req.body;
+      const updates = req.body;
 
-      if (password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        user.password = hashedPassword;
+      // Hash the password if it's being updated
+      if (updates.password) {
+        updates.password = await bcrypt.hash(updates.password, 10);
       }
 
-      user.name = name;
-      user.gender = gender;
-      user.email = email;
-      user.role = role;
-      user.type = type;
-      user.grNo = grNo;
-      user.phoneNo = phoneNo;
-      user.categoryId = categoryId;
-      user.instituteId = instituteId;
+      // Dynamically update only the fields present in the request body
+      for (const key in updates) {
+        if (Object.hasOwnProperty.call(user, key)) {
+          user[key] = updates[key];
+        }
+      }
 
       await user.save();
       res.json(user);
