@@ -137,10 +137,13 @@ exports.updateUser = [
   check('name').optional().isLength({ min: 3, max: 50 }).withMessage('Name must be between 3 and 50 characters'),
   check('gender').optional().isIn(['Male', 'Female', 'Other']).withMessage('Invalid gender'),
   check('email').optional().isEmail().withMessage('Invalid email'),
-  check('password').optional().isLength({ min: 4, max: 4 }).withMessage('Password must be between 4 and 4 characters'),
-  check('role').optional().isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee', 'User']).withMessage('Invalid role'),
-  check('rollNo').optional().isLength({ min: 1, max: 10 }).withMessage('Roll number must be between 1 and 10 characters'),
+  check('password').optional().isLength({ min: 8, max: 128 }).withMessage('Password must be between 8 and 128 characters'),
+  check('role')
+    .optional()
+    .isIn(['HOE', 'Student', 'Staff', 'Coordinator', 'Volunteer', 'Trustee', 'User'])
+    .withMessage('Invalid role'),
   check('type').optional().isIn(['Student', 'Staff']).withMessage('Invalid type'),
+  check('rollNo').optional().isLength({ min: 1, max: 10 }).withMessage('Roll number must be between 1 and 10 characters'),
   check('phoneNo').optional().isLength({ min: 10, max: 10 }).withMessage('Phone number must be 10 characters'),
   check('categoryId').optional().isInt().withMessage('Invalid category ID'),
   check('instituteId').optional().isInt().withMessage('Invalid institute ID'),
@@ -157,19 +160,17 @@ exports.updateUser = [
         return res.status(404).json({ msg: 'User not found' });
       }
 
-      const updates = req.body;
+      const updateData = { ...req.body };
 
-      // Hash the password if it's being updated
-      if (updates.password) {
-        updates.password = await bcrypt.hash(updates.password, 10);
+      // Hash password if it's included in the request body
+      if (updateData.password) {
+        updateData.password = await bcrypt.hash(updateData.password, 10);
       }
 
-      // Dynamically update only the fields present in the request body
-      for (const key in updates) {
-        if (Object.hasOwnProperty.call(user, key)) {
-          user[key] = updates[key];
-        }
-      }
+      // Update user data dynamically with the keys in `req.body`
+      Object.entries(updateData).forEach(([key, value]) => {
+        user[key] = value;
+      });
 
       await user.save();
       res.json(user);
@@ -179,6 +180,7 @@ exports.updateUser = [
     }
   },
 ];
+
 
 exports.deleteUser = async (req, res) => {
   try {
