@@ -44,10 +44,13 @@ exports.updateNotice = async (req, res) => {
         if (!notice) {
             res.status(404).json({ message: 'Notice not found' });
         } else {
-            notice.title = req.body.title;
-            notice.message = req.body.message;
-            await notice.save();
-            res.json(notice);
+            
+            const updatedNotice = await notice.update(req.body, {
+                where: { id },
+                returning: true
+            })
+            await updatedNotice.save();
+            res.json(updatedNotice);
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
