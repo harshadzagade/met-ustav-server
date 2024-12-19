@@ -12,11 +12,43 @@ const Event = sequelize.define('Event', {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  banner: {
-    type: DataTypes.STRING,
-    allowNull: true,
+  fromTime: {
+    type: DataTypes.TIME,
+    allowNull: false,
   },
-  poster: {
+  toTime: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  duration: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  location: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  aboutEvent: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  instructions: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  contactPerson: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  contactNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  contactEmail: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  banner: {
     type: DataTypes.STRING,
     allowNull: true,
   },
@@ -26,14 +58,6 @@ const Event = sequelize.define('Event', {
   },
   updateBy: {
     type: DataTypes.STRING,
-    allowNull: true,
-  },
-  addDate: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-  },
-  updateDate: {
-    type: DataTypes.DATE,
     allowNull: true,
   },
 });

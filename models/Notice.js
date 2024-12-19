@@ -23,16 +23,8 @@ const Notice = sequelize.define('Notice', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    addDate: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-    },
-    updateDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
-    }
-}
-);
+    
+});
 
 Notice.belongsTo(Institute, { as: 'Institutes', foreignKey: 'instituteId' });
 Institute.hasMany(Notice, { as: 'Notices', foreignKey: 'instituteId' });

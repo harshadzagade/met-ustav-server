@@ -7,4 +7,10 @@ const sequelize = new Sequelize('met_utsav', 'postgres', 'root', {
   port: 5432
 });
 
+sequelize.authenticate().then(() => {
+  console.log('Database connected successfully');
+}).catch(err => {
+  console.error('Unable to connect to the database:', err);
+});
+
 module.exports = sequelize;

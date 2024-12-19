@@ -8,6 +8,8 @@ const eventRoutes = require('./routes/eventRoutes');
 const instituteRoutes = require('./routes/instituteRoutes');
 const noticeRoutes = require('./routes/noticeRoutes');
 const roleRoutes = require('./routes/roleRoutes');
+const userEventsRoutes = require('./routes/userEventsRoutes');
+
 require('dotenv').config();
 
 const cors = require("cors");
@@ -24,6 +26,8 @@ app.use(cors(corsOptions));
 
 app.use(fileUpload());
 
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -31,6 +35,7 @@ app.use('/api/events', eventRoutes);
 app.use('/api/institutes', instituteRoutes);
 app.use('/api/notice', noticeRoutes);
 app.use('/api/roles', roleRoutes);
+app.use('/api/userevents', userEventsRoutes);
 
 
 
