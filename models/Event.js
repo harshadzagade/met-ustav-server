@@ -20,10 +20,6 @@ const Event = sequelize.define('Event', {
     type: DataTypes.TIME,
     allowNull: false,
   },
-  duration: {
-    type: DataTypes.TIME,
-    allowNull: false,
-  },
   location: {
     type: DataTypes.STRING,
     allowNull: false,
