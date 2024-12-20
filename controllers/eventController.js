@@ -18,28 +18,27 @@ const eventController = {
         contactPerson,
         contactEmail,
         contactNumber,
-        banner,
         addBy,
         categoryId,
       } = req.body;
 
       // Check if files are provided
-      // const bannerFile = req.files?.banner; // 'banner' is the key from the client
+      const bannerFile = req.files?.banner; // 'banner' is the key from the client
 
-      // // Set up upload directory
-      // const uploadDir = path.join(__dirname, "../uploads/");
-      // if (!fs.existsSync(uploadDir)) {
-      //   fs.mkdirSync(uploadDir, { recursive: true });
-      // }
+      // Set up upload directory
+      const uploadDir = path.join(__dirname, "../uploads/");
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
 
-      // // Save banner
-      // let bannerPath = null;
-      // if (bannerFile) {
-      //   const bannerFilename = bannerFile.name;
-      //   bannerPath = `/uploads/${bannerFilename}`;
-      //   const bannerFullPath = path.join(uploadDir, bannerFilename);
-      //   await bannerFile.mv(bannerFullPath); // Move file to destination
-      // }
+      // Save banner
+      let bannerPath = null;
+      if (bannerFile) {
+        const bannerFilename = bannerFile.name;
+        bannerPath = `/uploads/${bannerFilename}`;
+        const bannerFullPath = path.join(uploadDir, bannerFilename);
+        await bannerFile.mv(bannerFullPath); // Move file to destination
+      }
 
 
       // Save event to database
@@ -54,7 +53,7 @@ const eventController = {
         contactPerson,
         contactEmail,
         contactNumber,
-        banner,
+        banner : bannerPath,
         categoryId,
         addBy,
       });
