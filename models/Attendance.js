@@ -54,7 +54,7 @@ const Attendance = sequelize.define(
 );
 
 // Associations
-Attendance.belongsTo(User, { as: 'User', foreignKey: 'userId' });
+Attendance.belongsTo(User, { as: 'Users', foreignKey: 'userId' });
 User.hasMany(Attendance, { as: 'Attendances', foreignKey: 'userId' });
 
 Attendance.belongsTo(Institute, { as: 'Institute', foreignKey: 'instituteId' });
