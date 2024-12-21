@@ -53,6 +53,10 @@ const UserEvents = sequelize.define("UserEvents", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  trackName:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   fileUrl: {
     type: DataTypes.STRING,
     allowNull: true,

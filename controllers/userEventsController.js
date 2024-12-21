@@ -7,7 +7,7 @@ const userEventsController = {
   // Create User Event Application
   createUserEvent: async (req, res) => {
     try {
-      const { userId, eventId, categoryId, type, leaderName, leaderEmail, leaderPhoneNo, teamMembers, groupName, addBy } = req.body;
+      const { userId, eventId, categoryId, type, leaderName, leaderEmail, leaderPhoneNo, teamMembers, groupName, trackName, fileUrl,  addBy } = req.body;
 
        // Validate if Event model is defined
        if (!Event) {
@@ -49,6 +49,8 @@ const userEventsController = {
         leaderPhoneNo,
         teamMembers,
         groupName,
+        trackName,
+        fileUrl,
         status: "Submitted",
         addBy,
       });

@@ -9,6 +9,7 @@ const instituteRoutes = require('./routes/instituteRoutes');
 const noticeRoutes = require('./routes/noticeRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const userEventsRoutes = require('./routes/userEventsRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
 
 require('dotenv').config();
 
@@ -36,6 +37,7 @@ app.use('/api/institutes', instituteRoutes);
 app.use('/api/notice', noticeRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/userevents', userEventsRoutes);
+app.use('/api/attendance', attendanceRoutes);
 
 
 
