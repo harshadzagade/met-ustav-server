@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 const Institute = require("../models/Institute");
-const Category = require("../models/Category");
 require("dotenv").config();
 
 exports.registerUser = [
@@ -136,7 +135,6 @@ exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
       include: [
-        { model: Category, as: "Category" },
         { model: Institute, as: "Institute" },
       ],
     });
