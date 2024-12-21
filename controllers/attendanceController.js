@@ -6,11 +6,11 @@ const AttendanceController = {
     // Mark attendance
     markAttendance: async (req, res) => {
         try {
-            const { userId, status, date, addby } = req.body;
+            const { userId, instituteId,  status, date, addby } = req.body;
 
             // Validate required fields
-            if (!userId || !date || !addby) {
-                return res.status(400).json({ message: 'userId, date, and addby are required' });
+            if (!userId || !instituteId || !date || !addby) {
+                return res.status(400).json({ message: 'userId, instituteId, date, and addby are required' });
             }
 
             // Check if user exists
@@ -22,6 +22,7 @@ const AttendanceController = {
             // Create attendance record
             const attendance = await Attendance.create({
                 userId,
+                instituteId,
                 status: status || 'absent',
                 date,
                 addby,

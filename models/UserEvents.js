@@ -37,14 +37,6 @@ const UserEvents = sequelize.define("UserEvents", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  leaderEmail: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  leaderPhoneNo: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
   teamMembers: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -69,14 +61,6 @@ const UserEvents = sequelize.define("UserEvents", {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "Submitted",
-  },
-  addBy: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  updateBy: {
-    type: DataTypes.STRING,
-    allowNull: true,
   },
 });
 
