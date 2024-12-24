@@ -7,7 +7,7 @@ const userEventsController = {
   // Create User Event Application
   createUserEvent: async (req, res) => {
     try {
-      const { userId, eventId, categoryId, type, leaderName, leaderEmail, leaderPhoneNo, teamMembers, groupName, trackName, fileUrl,  addBy } = req.body;
+      const { userId, eventId, categoryId, fileUrl,  addBy } = req.body;
 
        // Validate if Event model is defined
        if (!Event) {
@@ -20,22 +20,13 @@ const userEventsController = {
         return res.status(404).json({ message: "Event not found" });
       }
 
-      // Check for date conflicts
-      const conflictingEvent = await UserEvents.findOne({
-        where: { userId },
-        include: [
-          {
-            model: Event,
-            as: "Events",
-            where: {
-              date: newEvent.date,
-            },
-          },
-        ],
+      // Check if user is already registered for the event
+      const existingUserEvent = await UserEvents.findOne({
+        where: { userId, eventId },
       });
 
-      if (conflictingEvent) {
-        return res.status(400).json({ message: "You can't apply for this." });
+      if (existingUserEvent) {
+        return res.status(400).json({ message: "User already registered for the event" });
       }
 
       // Create the user event application
@@ -43,13 +34,6 @@ const userEventsController = {
         userId,
         eventId,
         categoryId,
-        type,
-        leaderName,
-        leaderEmail,
-        leaderPhoneNo,
-        teamMembers,
-        groupName,
-        trackName,
         fileUrl,
         status: "Submitted",
         addBy,

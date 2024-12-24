@@ -29,26 +29,6 @@ const UserEvents = sequelize.define("UserEvents", {
       key: "id",
     },
   },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  leaderName: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  teamMembers: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  groupName: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  trackName:{
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
   fileUrl: {
     type: DataTypes.STRING,
     allowNull: true,

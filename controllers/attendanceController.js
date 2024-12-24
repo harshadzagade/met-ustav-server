@@ -8,10 +8,10 @@ const AttendanceController = {
         try {
             const { userId, instituteId,  status, date, addby } = req.body;
 
-            // Validate required fields
-            if (!userId || !instituteId || !date || !addby) {
-                return res.status(400).json({ message: 'userId, instituteId, date, and addby are required' });
-            }
+            // // Validate required fields
+            // if (!userId || !instituteId || !date || !addby) {
+            //     return res.status(400).json({ message: 'userId, instituteId, date, and addby are required' });
+            // }
 
             // Check if user exists
             const user = await User.findByPk(userId);
