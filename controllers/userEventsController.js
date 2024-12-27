@@ -116,6 +116,23 @@ const userEventsController = {
       res.status(500).json({ message: error.message });
     }
   },
+
+
+  // get to know user is already register for the event or not 
+  getUserEventByUserIdAndEventId: async (req, res) => {
+    try {
+      const { userId, eventId } = req.params;
+      const userEvent = await UserEvents.findOne({
+        where: { userId, eventId },
+      });
+      if (!userEvent) {
+        return res.status(404).json({ message: "User event not found" });
+      }
+      res.json(userEvent);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
 
 module.exports = userEventsController;
