@@ -170,8 +170,8 @@ exports.updateUser = [
   check("email").optional().isEmail().withMessage("Invalid email"),
   check("password")
     .optional()
-    .isLength({ min: 8, max: 128 })
-    .withMessage("Password must be between 8 and 128 characters"),
+    .isLength({ min: 4, max: 4 })
+    .withMessage("Password must be between 4 and 4 characters"),
   check("role")
     .optional({ nullable: true, checkFalsy: true })
     .isIn([
