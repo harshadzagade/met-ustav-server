@@ -29,6 +29,14 @@ const userEventsController = {
         return res.status(400).json({ message: "User already registered for the event" });
       }
 
+      // When user is registering for an event, then in the user table update the role to Participant
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      user.role = "Participant";
+      await user.save();
+
       // Create the user event application
       const userEvent = await UserEvents.create({
         userId,

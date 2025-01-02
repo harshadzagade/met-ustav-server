@@ -10,6 +10,7 @@ const noticeRoutes = require('./routes/noticeRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const userEventsRoutes = require('./routes/userEventsRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
+const resetPasswordRoutes = require('./routes/resetPasswordRoutes');
 
 require('dotenv').config();
 
@@ -38,6 +39,7 @@ app.use('/api/notice', noticeRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/userevents', userEventsRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/auth', resetPasswordRoutes)
 
 
 

@@ -9,9 +9,6 @@ exports.registerUser = [
   check("firstName")
     .isLength({ min: 3, max: 50 })
     .withMessage("First name must be between 3 and 50 characters"),
-  check("middleName")
-    .isLength({ min: 3, max: 50 })
-    .withMessage("Middle name must be between 3 and 50 characters"),
   check("lastName")
     .isLength({ min: 3, max: 50 })
     .withMessage("Last name must be between 3 and 50 characters"),
@@ -32,7 +29,7 @@ exports.registerUser = [
   check("role")
     .isIn([
       "HOE",
-      "Student",
+      "Participant",
       "Staff",
       "Coordinator",
       "Volunteer",
@@ -60,6 +57,7 @@ exports.registerUser = [
       role,
       type,
       rollNo,
+      pg_class,
       instituteId,
       phoneNo,
     } = req.body;
@@ -82,6 +80,7 @@ exports.registerUser = [
         role,
         type,
         rollNo,
+        pg_class,
         instituteId,
         phoneNo,
       });
@@ -244,5 +243,27 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error deleting user" });
+  }
+};
+
+
+// forget password with email and otp verification
+exports.forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    // generate otp
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    // send otp to user email
+    await sendEmail(email, otp);
+    user.otp = otp;
+    await user.save();
+    res.json({ msg: "OTP sent to your email" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error sending OTP" });
   }
 };

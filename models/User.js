@@ -48,6 +48,10 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    pg_class: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     instituteId: {
       type: DataTypes.INTEGER,
       allowNull: false,
