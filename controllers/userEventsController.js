@@ -118,8 +118,7 @@ const userEventsController = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  };
-  
+  },
 
   // Delete User Event
   deleteUserEvent: async (req, res) => {
