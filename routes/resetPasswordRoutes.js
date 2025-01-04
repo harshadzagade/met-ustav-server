@@ -4,7 +4,7 @@ const router = express.Router();
 // Import controller
 const resetPasswordController = require("../controllers/ResetPasswordController");
 
-router.post("/forget-password", resetPasswordController.forgetPassword);
-router.post("/verify-otp", resetPasswordController.verifyOTPAndResetPassword);
+router.post("/send-otp", resetPasswordController.forgetPassword);
+router.post("/reset-password", resetPasswordController.verifyOTPAndResetPassword);
 
 module.exports = router;
