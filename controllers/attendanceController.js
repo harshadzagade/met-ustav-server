@@ -6,34 +6,39 @@ const AttendanceController = {
     // Mark attendance
     markAttendance: async (req, res) => {
         try {
-            const { userId, instituteId,  status, date, addby } = req.body;
-
-            // // Validate required fields
-            // if (!userId || !instituteId || !date || !addby) {
-            //     return res.status(400).json({ message: 'userId, instituteId, date, and addby are required' });
-            // }
-
-            // Check if user exists
-            const user = await User.findByPk(userId);
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
+            const attendanceRecords = req.body; // Expect an array of attendance records
+    
+            if (!Array.isArray(attendanceRecords) || attendanceRecords.length === 0) {
+                return res.status(400).json({ message: 'Attendance records should be a non-empty array' });
             }
-
-            // Create attendance record
-            const attendance = await Attendance.create({
-                userId,
-                instituteId,
-                status: status || 'absent',
-                date,
-                addby,
-            });
-
-            return res.status(201).json({ message: 'Attendance marked successfully', attendance });
+    
+            // Validate each record in the array
+            const invalidRecords = attendanceRecords.filter(record => 
+                !record.userId || !record.instituteId || !record.date || !record.addby
+            );
+    
+            if (invalidRecords.length > 0) {
+                return res.status(400).json({ message: 'Some attendance records are missing required fields' });
+            }
+    
+            // Save all records to the database
+            const savedRecords = await Promise.all(attendanceRecords.map(record => 
+                Attendance.create({
+                    userId: record.userId,
+                    instituteId: record.instituteId,
+                    status: record.status || 'absent',
+                    date: record.date,
+                    addby: record.addby,
+                })
+            ));
+    
+            return res.status(201).json({ message: 'Attendance marked successfully', attendance: savedRecords });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Internal server error' });
         }
     },
+    
 
     // Update attendance
     updateAttendance: async (req, res) => {
